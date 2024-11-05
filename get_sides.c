@@ -3,7 +3,7 @@
 #include <string.h>
 #include <limits.h>
 
-int get_sides(double* side1, double* side2, double* side3) {
+long get_sides(double* side1, double* side2, double* side3) {
     char input[LINE_MAX];
     int result;
 
