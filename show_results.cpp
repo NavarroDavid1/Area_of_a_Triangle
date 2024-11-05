@@ -9,3 +9,4 @@ extern "C" void show_results(double side1, double side2, double side3, double ar
               << side3 << " is "
               << area << " square units.\n";
 }
+
