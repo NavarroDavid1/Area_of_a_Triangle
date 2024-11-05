@@ -6,7 +6,7 @@ section .data
     prompt3 db "Press enter after each number.", 10, 0
     nonsense_msg db "Your triangle is nonsense!", 10, 0
     return_msg db "The area will be returned to Heron.", 10, 0
-    len1 equ $ - prompt - 1  ; -1 to exclude null terminator
+    len1 equ $ - prompt - 1
     len2 equ $ - prompt2 - 1
     len3 equ $ - prompt3 - 1
     nonsense_len equ $ - nonsense_msg - 1
@@ -52,6 +52,13 @@ triangle:
     test eax, eax
     jz invalid_input
 
+    ; Check if triangle sides form a valid triangle
+    ; Compare side1 + side2 > side3
+    movsd xmm0, [rbp-8]
+    addsd xmm0, [rbp-16]
+    comisd xmm0, [rbp-24]
+    jbe print_nonsense
+
     ; Call compute_area with the three sides
     movsd xmm0, [rbp-8]
     movsd xmm1, [rbp-16]
@@ -60,11 +67,6 @@ triangle:
 
     ; Store result
     movsd [rbp-32], xmm0
-
-    ; Check if area is zero (nonsense triangle)
-    xorpd xmm1, xmm1
-    ucomisd xmm0, xmm1
-    je print_nonsense
 
 continue:
     ; Call show_results with the three sides and area
@@ -100,3 +102,4 @@ invalid_input:
     xorpd xmm0, xmm0  ; Return 0.0
     movsd [rbp-32], xmm0
     jmp continue
+
