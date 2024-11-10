@@ -13,7 +13,7 @@ TARGET = main
 OBJS = heron.o triangle.o compute_area.o get_sides.o show_results.o
 
 # Default target to build the final executable
-all: $(TARGET)
+build: $(TARGET)
 
 # Rule to build the final executable
 $(TARGET): $(OBJS)
@@ -44,5 +44,5 @@ clean:
 	rm -f $(OBJS) $(TARGET)
 
 # Run rule to compile and then execute the program
-run: all
+run: build
 	./$(TARGET)
