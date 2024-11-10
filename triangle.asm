@@ -52,11 +52,18 @@ triangle:
     test eax, eax
     jz invalid_input
 
-    ; Check if triangle sides form a valid triangle
+    ; Decision-making using integer comparison
+    ; Arbitrarily compare two registers for demonstration
+    mov rax, 5
+    mov rbx, 3
+    cmp rax, rbx            ; Compare two integer registers
+    jle print_nonsense      ; Jump if rax <= rbx
+
+    ; Check if triangle sides form a valid triangle using floating-point comparison
     ; Compare side1 + side2 > side3
     movsd xmm0, [rbp-8]
     addsd xmm0, [rbp-16]
-    comisd xmm0, [rbp-24]
+    ucomisd xmm0, [rbp-24]  ; Floating-point comparison (side1 + side2 > side3)
     jbe print_nonsense
 
     ; Call compute_area with the three sides
@@ -96,10 +103,11 @@ print_nonsense:
     mov rsi, nonsense_msg
     mov rdx, nonsense_len
     syscall
+    xorpd xmm0, xmm0  ; Return 0.0 in xmm0 for nonsense
+    movsd [rbp-32], xmm0
     jmp continue
 
 invalid_input:
     xorpd xmm0, xmm0  ; Return 0.0
     movsd [rbp-32], xmm0
     jmp continue
-
